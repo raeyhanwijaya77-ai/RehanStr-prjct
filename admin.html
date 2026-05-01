@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard - Hanzz Store</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  background:#0f172a;
+  color:white;
+}
+
+header{
+  text-align:center;
+  padding:15px;
+  background:#111827;
+  font-size:20px;
+  font-weight:bold;
+}
+
+.container{
+  padding:15px;
+}
+
+.card{
+  background:#1f2937;
+  padding:15px;
+  border-radius:12px;
+  margin-bottom:10px;
+}
+
+button{
+  padding:8px 12px;
+  margin:5px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.on{background:#22c55e; color:white;}
+.off{background:#ef4444; color:white;}
+</style>
+
+</head>
+<body>
+
+<header>🔐 ADMIN DASHBOARD - HANZZ STORE</header>
+
+<div class="container">
+
+  <div class="card">
+    <h3>⚡ Japost</h3>
+    <p id="stok1">STOK: SELALU ADA</p>
+    <button class="off" onclick="setStock('stok1','KOSONG')">SET KOSONG</button>
+    <button class="on" onclick="setStock('stok1','SELALU ADA')">SET ON</button>
+  </div>
+
+  <div class="card">
+    <h3>🚀 Panel Run Bot</h3>
+    <p id="stok2">STOK: TERSEDIA</p>
+    <button class="off" onclick="setStock('stok2','KOSONG')">SET KOSONG</button>
+    <button class="on" onclick="setStock('stok2','TERSEDIA')">SET ON</button>
+  </div>
+
+  <div class="card">
+    <h3>📱 Nokos WA</h3>
+    <p id="stok3">STOK: TERSEDIA</p>
+    <button class="off" onclick="setStock('stok3','KOSONG')">SET KOSONG</button>
+    <button class="on" onclick="setStock('stok3','TERSEDIA')">SET ON</button>
+  </div>
+
+</div>
+
+<script>
+function setStock(id, status){
+  document.getElementById(id).innerText = "STOK: " + status;
+}
+</script>
+
+</body>
+</html>
