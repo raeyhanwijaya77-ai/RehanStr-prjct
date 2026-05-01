@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Dashboard - Hanzz Store</title>
+<title>Admin Real-Time - Hanzz Store</title>
 
 <style>
 body{
@@ -18,66 +18,88 @@ header{
   padding:15px;
   background:#111827;
   font-size:20px;
-  font-weight:bold;
-}
-
-.container{
-  padding:15px;
 }
 
 .card{
   background:#1f2937;
+  margin:10px;
   padding:15px;
   border-radius:12px;
-  margin-bottom:10px;
 }
 
 button{
-  padding:8px 12px;
+  padding:8px 10px;
   margin:5px;
   border:none;
   border-radius:8px;
   cursor:pointer;
 }
 
-.on{background:#22c55e; color:white;}
-.off{background:#ef4444; color:white;}
+.on{background:#22c55e;color:white;}
+.off{background:#ef4444;color:white;}
 </style>
 
 </head>
 <body>
 
-<header>🔐 ADMIN DASHBOARD - HANZZ STORE</header>
+<header>🔐 ADMIN REAL-TIME DASHBOARD</header>
 
-<div class="container">
-
-  <div class="card">
-    <h3>⚡ Japost</h3>
-    <p id="stok1">STOK: SELALU ADA</p>
-    <button class="off" onclick="setStock('stok1','KOSONG')">SET KOSONG</button>
-    <button class="on" onclick="setStock('stok1','SELALU ADA')">SET ON</button>
-  </div>
-
-  <div class="card">
-    <h3>🚀 Panel Run Bot</h3>
-    <p id="stok2">STOK: TERSEDIA</p>
-    <button class="off" onclick="setStock('stok2','KOSONG')">SET KOSONG</button>
-    <button class="on" onclick="setStock('stok2','TERSEDIA')">SET ON</button>
-  </div>
-
-  <div class="card">
-    <h3>📱 Nokos WA</h3>
-    <p id="stok3">STOK: TERSEDIA</p>
-    <button class="off" onclick="setStock('stok3','KOSONG')">SET KOSONG</button>
-    <button class="on" onclick="setStock('stok3','TERSEDIA')">SET ON</button>
-  </div>
-
+<div class="card">
+  <h3>⚡ Japost</h3>
+  <p id="japost">loading...</p>
+  <button class="on" onclick="setStock('japost','SELALU ADA')">ON</button>
+  <button class="off" onclick="setStock('japost','KOSONG')">OFF</button>
 </div>
 
-<script>
-function setStock(id, status){
-  document.getElementById(id).innerText = "STOK: " + status;
+<div class="card">
+  <h3>🚀 Panel Run Bot</h3>
+  <p id="panel">loading...</p>
+  <button class="on" onclick="setStock('panel','TERSEDIA')">ON</button>
+  <button class="off" onclick="setStock('panel','KOSONG')">OFF</button>
+</div>
+
+<div class="card">
+  <h3>📱 Nokos WA</h3>
+  <p id="nokos">loading...</p>
+  <button class="on" onclick="setStock('nokos','TERSEDIA')">ON</button>
+  <button class="off" onclick="setStock('nokos','KOSONG')">OFF</button>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+// 🔥 GANTI CONFIG FIREBASE KAMU
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT",
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// ===== UPDATE STOK (ADMIN)
+window.setStock = async function(item, value){
+  await setDoc(doc(db, "stok", item), {
+    status: value
+  });
 }
+
+// ===== REALTIME LISTENER (AUTO UPDATE)
+function listen(item, elementId){
+  onSnapshot(doc(db, "stok", item), (docSnap) => {
+    if(docSnap.exists()){
+      document.getElementById(elementId).innerText =
+      "STOK: " + docSnap.data().status;
+    }
+  });
+}
+
+listen("japost","japost");
+listen("panel","panel");
+listen("nokos","nokos");
+
 </script>
 
 </body>
